@@ -1,103 +1,141 @@
+"use client";
+import React from "react";
 import Image from "next/image";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { parseEther } from "ethers"; // Ethers v6
+import volcanoesABI from "../../abis/VolcanoesABI.json";
+
+// Dirección de tu contrato en Base Sepolia
+const CONTRACT_ADDRESS = "0x1b33ae1068E0ADC68ffcbfb2b8A0D30f4280f0c9";
+
+const volcanoesData = [
+  {
+    id: 1,
+    name: "Volcano #1",
+    image: "/san_sanl.png",
+    description: "El volcán primigenio, poderoso e imponente.",
+  },
+  {
+    id: 2,
+    name: "Volcano #2",
+    image: "/santa_ana.png",
+    description: "Erupción incandescente en un atardecer místico.",
+  },
+  {
+    id: 3,
+    name: "Volcano #3",
+    image: "/san_vicen.png",
+    description: "La calma antes de la tormenta.",
+  },
+  {
+    id: 4,
+    name: "Volcano #4",
+    image: "/san_mig.png",
+    description: "Una furia elemental incontenible.",
+  },
+  {
+    id: 5,
+    name: "Volcano #5",
+    image: "/izalco.png",
+    description: "El faro de Centro America.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-[#faf4eb] text-[#4b3e2b] font-serif flex flex-col items-center py-8 px-4">
+      {/* Encabezado */}
+      <div className="flex flex-col items-center mb-8">
+        <ConnectButton accountStatus="address" chainStatus="icon" showBalance={false} />
+        <h1 className="mt-6 text-4xl md:text-5xl font-extrabold">Volcanoes on Base</h1>
+        <p className="text-md md:text-lg mt-2">¡Colecciona y haz mint de tu volcán favorito!</p>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {/* Grid de Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl w-full">
+        {volcanoesData.map((volcano) => (
+          <VolcanoCard key={volcano.id} volcano={volcano} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Componente Card para cada volcán
+ */
+function VolcanoCard({
+  volcano,
+}: {
+  volcano: { id: number; name: string; image: string; description: string };
+}) {
+  // useWriteContract envía la tx y nos da feedback inmediato
+  const {
+    data: txHash,    // hash de la transacción si se firmó
+    isLoading,       // indicando si se está firmando la tx
+    isSuccess,       // la tx fue firmada correctamente
+    status,          // 'idle' | 'pending' | 'error' | 'success'
+    error,           // objeto de error si falla
+    write,
+    // Podemos usar callbacks onSuccess, onError, onSettled si deseamos:
+    // onSuccess, onError, onSettled, ...
+  } = useWriteContract({
+    address: CONTRACT_ADDRESS as `0x${string}`,
+    abi: volcanoesABI,
+    functionName: "publicMint",
+    args: [BigInt(volcano.id), 1n, "0x"], // Minteamos 1 unidad
+    value: parseEther("0.005"),           // 0.005 ETH
+    // Ejemplo de callback onSuccess:
+    onSuccess(data, variables, context) {
+      console.log("Transacción firmada. Hash:", data);
+    },
+    onError(err, variables, context) {
+      console.error("Error al enviar transacción:", err);
+    },
+  });
+
+  // useWaitForTransactionReceipt para saber cuándo se minó la tx
+  const {
+    isLoading: txLoading, // Esperando confirmación en la red
+    isSuccess: txSuccess, // Ya está minada
+  } = useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  // Estado combinado: true si se está firmando o minando
+  const minting = isLoading || txLoading;
+
+  // true cuando se firmó e hizo mining con éxito
+  const mintedOk = isSuccess && txSuccess;
+
+  return (
+    <div className="relative border-2 border-[#d1c1a3] bg-white rounded-lg p-4 shadow-lg flex flex-col items-center">
+      {/* Imagen */}
+      <div className="w-full h-64 relative">
+        <Image src={volcano.image} alt={volcano.name} fill className="object-contain" />
+      </div>
+
+      {/* Nombre y descripción */}
+      <h2 className="mt-4 text-2xl font-bold text-center">{volcano.name}</h2>
+      <p className="text-center text-sm mt-2">{volcano.description}</p>
+
+      {/* Botón de Mint */}
+      <button
+        className="mt-4 px-4 py-2 bg-[#c4a484] text-white rounded-md hover:bg-[#b39276] transition-colors disabled:opacity-50"
+        onClick={() => write?.()} // Llama a la transacción
+        disabled={!write || minting} // Deshabilita si no hay write o si está minteando
+      >
+        {minting ? "Minting..." : "Mint"}
+      </button>
+
+      {/* Mensajes de feedback */}
+      {error && (
+        <p className="mt-2 text-red-700">
+          Error: {error.shortMessage || error.message}
+        </p>
+      )}
+      {mintedOk && <p className="mt-2 text-green-700">¡Mint exitoso!</p>}
     </div>
   );
 }
