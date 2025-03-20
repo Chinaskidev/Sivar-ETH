@@ -1,4 +1,4 @@
-"use client"; // Si usas Next.js 13 con el app router
+"use client"; 
 
 import * as React from "react";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
