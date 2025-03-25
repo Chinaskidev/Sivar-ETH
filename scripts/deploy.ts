@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 
 async function main() {
   // Ajusta la URI base según tu preferencia
-  const baseURI = "https://crimson-solid-scorpion-893.mypinata.cloud/ipfs/bafybeifcnpreuj2h4z3hbmweuzwx7gy45ntvren2uubdmkz56ysy5djiz4/";
+  const baseURI = "https://crimson-solid-scorpion-893.mypinata.cloud/ipfs/bafybeigdu7gjjno2urgfelapikflezytnzxn62syxjvs3lxp2q5mmlu5de/";
 
   // Obtenemos la factoría de tu contrato
   const VolcanoesFactory = await ethers.getContractFactory("Volcanoes");

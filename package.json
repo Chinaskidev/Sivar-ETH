@@ -10,15 +10,21 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0",
+    "@radix-ui/react-slot": "^1.1.2",
     "@rainbow-me/rainbowkit": "^2.2.4",
-    "@tanstack/react-query": "^5.68.0",
+    "@tanstack/react-query": "^5.69.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
+    "lucide-react": "^0.483.0",
     "next": "15.2.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "viem": "^2.23.11",
-    "wagmi": "^2.14.15"
+    "tailwind-merge": "^3.0.2",
+    "tw-animate-css": "^1.2.4",
+    "viem": "^2.23.14",
+    "wagmi": "^0.0.0-canary-20250318024948"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
